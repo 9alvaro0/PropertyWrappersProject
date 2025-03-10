@@ -23,6 +23,7 @@ Cada `Tab` en la app representa un Property Wrapper y te permite visualizar cóm
 ✅ ¡Y muchos más!
 
 ## 🛠️ Instalación
+![RocketSim_Screenshot_iPhone_16_Pro_6 3_2025-03-10_16 54 29](https://github.com/user-attachments/assets/eb2c89d7-03ba-4f67-9d8e-efc6122f0245)
 
 1. **Clona el repositorio**:
    ```bash
