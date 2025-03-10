@@ -12,35 +12,43 @@ struct ObservedObjectObservableObjectDemo: View {
     
     @StateObject private var viewModel = ObservableObjectViewModel()
     @State private var isAnimating: Bool = false
-    @State private var localUsername: String = ""
-
+    
     var body: some View {
-        VStack(spacing: 24) {
+        CardView(tab: tab) {
             Text("Demostración Interactiva")
                 .font(.title2.bold())
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             viewModelCard
-            observedObjectCard
-            interactionCard
+            parentView
+            ChildView(
+                tab: tab,
+                viewModel: viewModel
+            )
+            .onChange(of: viewModel.username) {
+                withAnimation {
+                    isAnimating = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        isAnimating = false
+                    }
+                }
+            }
         }
-        .padding()
-        .background(tab.theme.cardBackground)
-        .cornerRadius(16)
-        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
     
     private var viewModelCard: some View {
         VStack(spacing: 16) {
-            Text("ViewModel (ObservableObject)")
+            Text("ViewModel")
                 .font(.headline)
                 .foregroundColor(.secondary)
-
+            
             Text("@Published var username = \"\(viewModel.username)\"")
                 .font(.caption)
                 .padding(6)
                 .background(tab.theme.secondaryColor.opacity(0.2))
                 .cornerRadius(4)
+                .scaleEffect(isAnimating ? 1.05 : 1.0)
+                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isAnimating)
             
             Button("Actualizar username en ViewModel") {
                 withAnimation {
@@ -54,74 +62,68 @@ struct ObservedObjectObservableObjectDemo: View {
             .buttonStyle(.borderedProminent)
             .tint(tab.theme.primaryColor)
         }
+        .frame(maxWidth: .infinity)
         .padding()
-        .background(tab.theme.cardBackground)
-        .cornerRadius(12)
+        .background(tab.theme.backgroundColor)
+        .cornerRadius(6)
     }
     
-    private var observedObjectCard: some View {
+    private var parentView: some View {
         VStack(spacing: 16) {
-            Text("Vista Secundaria (@ObservedObject)")
+            Text("Vista Padre")
                 .font(.headline)
                 .foregroundColor(.secondary)
+            
+            Text("@StateObject var viewModel = ViewModel()")
+                .font(.caption)
+                .padding(6)
+                .background(tab.theme.secondaryColor.opacity(0.2))
+                .cornerRadius(4)
+            
+            VStack(spacing: 16) {
+                Text("Username observado:")
+                    .font(.subheadline)
+                
+                Text(viewModel.username)
+                    .font(.system(size: 48, weight: .bold, design: .rounded))
+                    .foregroundColor(tab.theme.primaryColor)
+                    .scaleEffect(isAnimating ? 1.05 : 1.0)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isAnimating)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(tab.theme.backgroundColor)
+        .cornerRadius(6)
+    }
+}
 
+private struct ChildView: View {
+    let tab: Tab
+    @ObservedObject var viewModel: ObservableObjectViewModel
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("Vista hija")
+                .font(.headline)
+                .foregroundColor(.secondary)
+            
             Text("@ObservedObject var viewModel")
                 .font(.caption)
                 .padding(6)
                 .background(tab.theme.secondaryColor.opacity(0.2))
                 .cornerRadius(4)
             
-            SecondaryView(viewModel: viewModel)
-        }
-        .padding()
-        .background(tab.theme.cardBackground)
-        .cornerRadius(12)
-    }
-    
-    private var interactionCard: some View {
-        VStack(spacing: 16) {
-            Text("Interacción con Binding")
-                .font(.headline)
-                .foregroundColor(.secondary)
-            
-            TextField("Modificar username", text: $localUsername)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal)
-            
-            Button("Aplicar cambio") {
-                withAnimation {
-                    viewModel.username = localUsername
-                    isAnimating = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        isAnimating = false
-                    }
-                }
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(tab.theme.primaryColor)
-            .disabled(localUsername.isEmpty)
-        }
-        .padding()
-        .background(tab.theme.cardBackground)
-        .cornerRadius(12)
-    }
-}
-
-private struct SecondaryView: View {
-    @ObservedObject var viewModel: ObservableObjectViewModel
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            Text("Username observado:")
-                .font(.subheadline)
-            
-            Text(viewModel.username)
-                .font(.title3.bold())
-                .foregroundColor(.primary)
+            TextField("Modificar username", text: $viewModel.username)
+                .font(.title2.bold())
                 .padding()
-                .background(Color.secondary.opacity(0.1))
+                .background(tab.theme.secondaryColor.opacity(0.1))
                 .cornerRadius(8)
         }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(tab.theme.backgroundColor)
+        .cornerRadius(6)
     }
 }
 

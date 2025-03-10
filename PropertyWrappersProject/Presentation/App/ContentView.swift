@@ -16,6 +16,7 @@ struct ContentView: View {
         TabView(selection: $selectedTab) {
             ForEach(Tab.allCases, id: \.self) { tab in
                 tab.view
+                    .tag(tab)
             }
         }
         .tint(selectedTab.theme.primaryColor)

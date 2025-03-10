@@ -8,13 +8,6 @@
 import SwiftUI
 
 indirect enum Tab: CaseIterable, Hashable {
-    static var allCases: [Tab] = [
-        .state,
-        .binding,
-        .stateObject([.stateObjectObservableObject,.stateObservable]),
-        .observedObject([.observedObjectObservableObject, .varObservable, .bindableObservable])
-    ]
-    
     case state
     case binding
     case stateObject([Tab])
@@ -25,99 +18,72 @@ indirect enum Tab: CaseIterable, Hashable {
     case varObservable
     case bindableObservable
     
+    static var allCases: [Tab] = [
+        .state,
+        .binding,
+        .stateObject(
+            [
+                .stateObjectObservableObject,
+                .stateObservable
+            ]
+        ),
+        .observedObject(
+            [
+                .observedObjectObservableObject,
+                .varObservable,
+                .bindableObservable
+            ]
+        )
+    ]
+    
     var title: String {
         switch self {
         case .state: return "@State"
         case .binding: return "@Binding"
         case .stateObject: return "@StateObject"
-        case .stateObjectObservableObject: return "< iOS17"
-        case .stateObservable: return "iOS17 +"
+        case .stateObjectObservableObject: return "ObservableObject (< iOS17)"
+        case .stateObservable: return "@State + @Observable"
         case .observedObject: return "@ObservedObject"
-        case .observedObjectObservableObject: return "ObservedObject + ObservableObject"
-        case .varObservable: return "var + Observable"
-        case .bindableObservable: return "Bindable + Observable"
+        case .observedObjectObservableObject: return "ObservableObject tradicional"
+        case .varObservable: return "Observable moderno (var)"
+        case .bindableObservable: return "Bindable moderno"
         }
     }
     
     var subtitle: String {
         switch self {
-        case .state: return "Gestiona el **estado local** de una vista"
-        case .binding: return "Crea una **referencia bidireccional** a un estado"
-        case .stateObject: return "Compara el manejo de **objetos observables**"
-        case .stateObjectObservableObject: return "Comparación entre **@State y ObservableObject**"
-        case .stateObservable: return "Cómo combinar **@State** con objetos observables"
-        case .observedObject: return "Observa cambios en **objetos externos**"
-        case .observedObjectObservableObject: return "**@ObservedObject** con **ObservableObject**"
-        case .varObservable: return "Uso de **var** con **Observable**"
-        case .bindableObservable: return "**Bindable** combinado con **Observable**"
+        case .state:
+            return "Datos simples y **locales** que actualizan la vista automáticamente."
+        case .binding:
+            return "Referencia **bidireccional** de lectura y escritura entre vistas."
+        case .stateObject:
+            return "Gestión de objetos observables propios de una vista."
+        case .stateObjectObservableObject:
+            return "Instancias únicas con `@StateObject`."
+        case .stateObservable:
+            return "Integración directa de `@State` con `@Observable` (iOS 17+)."
+        case .observedObject:
+            return "Observa objetos externos desde una vista."
+        case .observedObjectObservableObject:
+            return "Patrón clásico: `@ObservedObject` y `ObservableObject`."
+        case .varObservable:
+            return "Eliminando boilerplate con `@Observable`."
+        case .bindableObservable:
+            return "Enlaces simples y directos con `@Bindable`."
         }
     }
     
     var theme: TabTheme {
         switch self {
-        case .state:
-            return TabTheme(
-                primaryColor: .blue,
-                secondaryColor: .cyan,
-                backgroundColor: Color(.systemBackground),
-                cardBackground: Color(.systemGray6)
-            )
-        case .binding:
-            return TabTheme(
-                primaryColor: .green,
-                secondaryColor: .yellow,
-                backgroundColor: Color(.systemBackground),
-                cardBackground: Color(.systemGray6)
-            )
-        case .stateObject:
-            return TabTheme(
-                primaryColor: .purple,
-                secondaryColor: .pink,
-                backgroundColor: Color(.systemBackground),
-                cardBackground: Color(.systemGray6)
-            )
-        case .stateObjectObservableObject:
-            return TabTheme(
-                primaryColor: .indigo,
-                secondaryColor: .mint,
-                backgroundColor: Color(.systemBackground),
-                cardBackground: Color(.systemGray6)
-            )
-        case .stateObservable:
-            return TabTheme(
-                primaryColor: .teal,
-                secondaryColor: .orange,
-                backgroundColor: Color(.systemBackground),
-                cardBackground: Color(.systemGray6)
-            )
-        case .observedObject:
-            return TabTheme(
-                primaryColor: .red,
-                secondaryColor: .orange,
-                backgroundColor: Color(.systemBackground),
-                cardBackground: Color(.systemGray6)
-            )
-        case .observedObjectObservableObject:
-            return TabTheme(
-                primaryColor: .brown,
-                secondaryColor: .yellow,
-                backgroundColor: Color(.systemBackground),
-                cardBackground: Color(.systemGray6)
-            )
-        case .varObservable:
-            return TabTheme(
-                primaryColor: .gray,
-                secondaryColor: .blue,
-                backgroundColor: Color(.systemBackground),
-                cardBackground: Color(.systemGray6)
-            )
-        case .bindableObservable:
-            return TabTheme(
-                primaryColor: .orange,
-                secondaryColor: .purple,
-                backgroundColor: Color(.systemBackground),
-                cardBackground: Color(.systemGray6)
-            )
+        case .state: return TabTheme(.blue, .cyan)
+        case .binding: return TabTheme(.green, .yellow)
+        case .stateObject: return TabTheme(.purple, .pink)
+        case .stateObjectObservableObject: return TabTheme(.indigo, .mint)
+        case .stateObservable: return TabTheme(.teal, .orange)
+        case .observedObject: return TabTheme(.red, .orange)
+        case .observedObjectObservableObject: return TabTheme(.brown, .yellow)
+        case .varObservable: return TabTheme(.gray, .blue)
+        case .bindableObservable: return TabTheme(.orange, .purple)
         }
     }
     
@@ -167,177 +133,214 @@ indirect enum Tab: CaseIterable, Hashable {
         switch self {
         case .state: return "📌 @State"
         case .binding: return "📌 @Binding"
-        case .stateObject: return "📌 @StateObject vs @State"
-        case .stateObjectObservableObject: return "📌 @StateObject + ObservableObject"
-        case .stateObservable: return "📌 @State + Observable"
+        case .stateObject: return "📌 @StateObject"
+        case .stateObjectObservableObject: return "📌 ObservableObject (< iOS17)"
+        case .stateObservable: return "📌 @State + @Observable (iOS17+)"
         case .observedObject: return "📌 @ObservedObject"
-        case .observedObjectObservableObject: return "📌 @ObservedObject + ObservableObject"
+        case .observedObjectObservableObject: return "📌 @ObservedObject tradicional"
         case .varObservable: return "📌 var + @Observable"
         case .bindableObservable: return "📌 @Bindable + @Observable"
         }
     }
-    
+
     var concept: Concept {
         switch self {
         case .state:
             return Concept(
-                title: "¿Qué es @State?",
+                title: "🚩 ¿Qué es @State?",
                 description: """
-                `@State` es el property wrapper principal para gestionar estado local en una vista.
-                
-                Se usa cuando un dato pertenece solo a esta vista y debe actualizar la UI al cambiar.
+                `@State` gestiona **estados locales** en una vista. Úsalo para datos simples que actualizan automáticamente la UI al cambiar.
                 """,
                 explanation: """
-                Cuando marcas una propiedad con `@State`, SwiftUI se encarga de:
-                
-                • Almacenar el valor fuera de la estructura de la vista
-                • Mantener el valor cuando la vista se redibuja
-                • Actualizar automáticamente la UI cuando el valor cambia
-                • Proporcionar un binding ($) para pasar a subvistas
+                Al usar `@State`, SwiftUI automáticamente:
+                • Guarda el valor fuera de la estructura.
+                • Mantiene el estado entre redibujados.
+                • Actualiza la UI automáticamente.
+                • Proporciona `$binding` para usar en subvistas.
                 """
             )
+
         case .binding:
             return Concept(
-                title: "¿Qué es @Binding?",
+                title: "🔗 ¿Qué es @Binding?",
                 description: """
-                `@Binding` permite que una vista hija modifique un estado que pertenece a la vista padre.
-                Es una referencia de lectura y escritura a un valor externo (fuente de verdad).
+                `@Binding` permite que vistas hijas modifiquen un estado propiedad de la vista padre, creando una referencia **bidireccional**.
                 """,
                 explanation: """
-                Cuando usas `@Binding`:
-                
-                • La vista hija puede leer y escribir el valor
-                • Los cambios se reflejan en la vista padre
-                • No se crea una copia del valor, sino una referencia
-                • Permite la comunicación bidireccional entre vistas
+                Con `@Binding`:
+                • Vistas hijas leen y escriben valores externos.
+                • Los cambios se reflejan inmediatamente en la vista padre.
+                • Favorece la comunicación directa entre vistas.
                 """
             )
+
         case .stateObject:
             return Concept(
-                title: "¿Qué es @StateObject vs. @State?",
+                title: "🔍 @StateObject vs. @State",
                 description: """
-                A partir de iOS 17, `@Observable` permite gestionar objetos observables sin necesidad de `@StateObject`. 
-                Antes, `@StateObject` era clave para manejar instancias de `ObservableObject` en SwiftUI. 
-                
-                Ahora, `@State` puede almacenar tipos `@Observable`, simplificando la gestión del estado.
+                Antes de iOS 17, `@StateObject` era clave para gestionar objetos observables propios de la vista. Desde iOS 17, puedes simplificar usando `@State` con objetos `@Observable`.
                 """,
-                explanation: ""
+                explanation: """
+                • `@StateObject` mantiene una instancia única mientras la vista exista.
+                • En iOS 17+, `@State` maneja objetos `@Observable` directamente, facilitando la gestión del ciclo de vida.
+                """
             )
-            
+
         case .stateObjectObservableObject:
             return Concept(
-                title: "Que es @StateObject",
+                title: "📦 ¿Qué es @StateObject?",
                 description: """
-                Antes de iOS 17, `@StateObject` era necesario para instanciar objetos observables.
-                `@StateObject` garantiza que el objeto solo se cree una vez y viva mientras la vista esté activa.
+                Antes de iOS 17, `@StateObject` era necesario para instanciar objetos observables, asegurando que se creen una sola vez.
                 """,
                 explanation: """
-                Cuando usas `@StateObject`:
-                
-                • El objeto se crea una sola vez y persiste durante la vida de la vista
-                • Es ideal para objetos que manejan lógica de negocio o datos complejos
-                • Combina bien con `ObservableObject` y `@Published` para notificar cambios
-                • Evita reinicializaciones no deseadas durante actualizaciones de la vista
+                Al usar `@StateObject`:
+                • La instancia persiste durante toda la vida de la vista.
+                • Ideal para datos complejos y lógica de negocio.
+                • Previene reinicializaciones indeseadas.
                 """
             )
+
         case .stateObservable:
             return Concept(
-                title: "¿Qué es @State con @Observable?",
+                title: "🌟 @State con @Observable (iOS 17+)",
                 description: """
-                Ahora `@State` puede usarse con `@Observable`, eliminando la necesidad de `@StateObject`.
-                SwiftUI gestiona la instancia correctamente sin que se reinicie.
+                Con iOS 17+, combina `@State` directamente con objetos `@Observable`, simplificando la gestión del estado.
                 """,
                 explanation: """
-                Cuando usas `@State` con `@Observable`:
-                
-                • SwiftUI maneja automáticamente el ciclo de vida del objeto
-                • No es necesario usar `@Published` para las propiedades
-                • Los cambios en cualquier propiedad del objeto provocan una actualización de la UI
-                • Es más simple y menos propenso a errores que el enfoque anterior
+                Beneficios:
+                • No necesitas usar `@Published`.
+                • Actualiza automáticamente la UI con cada cambio.
+                • Manejo automático del ciclo de vida del objeto.
                 """
             )
+
         case .observedObject:
             return Concept(
-                title: "¿Qué es @ObservedObject vs. opciones modernas?",
+                title: "🔄 @ObservedObject: antes y ahora",
                 description: """
-                `@ObservedObject` se usa para observar objetos externos en SwiftUI y actualizar la UI cuando cambian. 
-                Antes de iOS 17, era la principal forma de manejar datos compartidos entre vistas.
-                
-                Con la introducción de `@Observable` y `@Bindable`, hay alternativas más eficientes y directas.
+                `@ObservedObject` observa objetos externos y actualiza la UI cuando cambian. Era esencial antes de iOS 17; ahora `@Observable` ofrece alternativas más modernas.
                 """,
                 explanation: """
-                **Antes de iOS 17:**
-                - `@ObservedObject` observa objetos que conforman `ObservableObject`.
-                - La vista se actualiza cuando cambia una propiedad `@Published`.
-                - No retiene la instancia del objeto, otro componente debe manejar su ciclo de vida.
-                - Ideal para compartir datos entre múltiples vistas.
-                
-                **Desde iOS 17+:**
-                - `@Observable` evita la necesidad de `@Published`, observando cambios de forma más eficiente.
-                - `@Bindable` permite la vinculación directa a la UI, eliminando la necesidad de `Binding` manual.
+                Antes de iOS 17:
+                • Observa propiedades con `@Published`.
+                • No retiene la instancia.
+
+                Desde iOS 17+:
+                • Usa `@Observable` sin `@Published`.
+                • Más eficiente y sencillo.
                 """
             )
-            
+
         case .observedObjectObservableObject:
             return Concept(
-                title: "¿Qué es @ObservedObject con ObservableObject?",
+                title: "📚 ¿Qué es @ObservedObject clásico?",
                 description: """
-                `@ObservedObject` permite que una vista observe cambios en un objeto que conforma `ObservableObject`. 
-                La UI se actualiza cuando sus propiedades `@Published` cambian.
+                Patrón clásico que usa `@ObservedObject` junto con objetos que implementan `ObservableObject` y propiedades `@Published`.
                 """,
                 explanation: """
-                **Características clave:**
-                - Se usa con clases conformes a `ObservableObject`.
-                - Requiere `@Published` en cada propiedad para detectar cambios.
-                - No retiene la instancia, por lo que otro componente debe manejar su ciclo de vida.
-                - Se usa cuando un objeto es creado fuera de la vista actual.
-                
-                **Limitaciones:**
-                - Necesita `@Published`, lo que puede generar sobrecarga innecesaria.
-                - No es tan eficiente como `@Observable` en iOS 17+.
-                - Puede causar reinicializaciones no deseadas si no se maneja correctamente.
+                • Actualiza la UI al detectar cambios.
+                • La vista no es dueña del objeto, solo lo observa.
+                • Útil para compartir datos entre múltiples vistas.
                 """
             )
-            
+
         case .varObservable:
             return Concept(
-                title: "¿Qué es @Observable?",
+                title: "🚀 @Observable moderno",
                 description: """
-                `@Observable` es una nueva forma de hacer que las clases sean observables sin necesidad de `ObservableObject` ni `@Published`.
+                Desde iOS 17, `@Observable` permite observar automáticamente cambios sin necesidad de usar `ObservableObject` o `@Published`.
                 """,
                 explanation: """
-                **Diferencias con `@ObservedObject`:**
-                - No necesita `@Published`, SwiftUI observa automáticamente las propiedades.
-                - Es más eficiente y optimiza el rendimiento al reducir la sobrecarga de notificaciones de cambios.
-                - Permite la reactividad sin necesidad de conformar explícitamente a `ObservableObject`.
-                
-                **Lectura vs Escritura:**
-                - Se puede leer directamente desde una vista usando `@State`.
-                - No requiere `Binding` para actualizar valores, ya que SwiftUI rastrea automáticamente los cambios.
-                - No necesita `@ObservedObject` ni `@StateObject` para ser reactivo.
-                
-                **Requiere iOS 17+**
+                Ventajas:
+                • Menos código boilerplate.
+                • SwiftUI detecta automáticamente cambios.
+                • Mejora el rendimiento y la claridad del código.
                 """
             )
-            
+
         case .bindableObservable:
             return Concept(
-                title: "¿Qué es @Bindable?",
+                title: "🎛️ ¿Qué es @Bindable?",
                 description: """
-                `@Bindable` permite crear modelos de datos que pueden vincularse directamente a la UI sin necesidad de `Binding` manual.
+                `@Bindable` permite una vinculación directa entre la UI y el modelo de datos sin necesidad de bindings explícitos.
                 """,
                 explanation: """
-                **Diferencias con `@ObservedObject` y `@Observable`:**
-                - `@Bindable` permite la sincronización bidireccional entre el modelo de datos y la UI.
-                - Es útil cuando se necesita modificar datos directamente desde controles de la UI como `TextField`, `Toggle`, etc.
-                - No requiere `Binding`, ya que proporciona un acceso seguro y reactivo a los valores.
-                
-                **Lectura vs Escritura:**
-                - Permite modificar los valores sin necesidad de pasar `$` bindings manualmente.
-                - Es ideal para vistas donde el usuario edita datos en formularios u otros inputs interactivos.
+                Características:
+                • Modifica directamente propiedades desde controles de UI.
+                • Comunicación bidireccional automática.
+                • Ideal para formularios e inputs interactivos.
                 """
             )
-            
+        }
+    }
+    
+    var process: ProcessInfo {
+        switch self {
+        case .state:
+            return ProcessInfo(
+                steps: [
+                    "SwiftUI almacena el valor de @State fuera de la estructura de la vista",
+                    "Cuando el valor cambia, SwiftUI detecta el cambio",
+                    "La vista se redibuja automáticamente con el nuevo valor"
+                ]
+            )
+        case .binding:
+            return ProcessInfo(
+                steps: [
+                    "La vista padre pasa el estado con $ (ej: $userName)",
+                    "La vista hija recibe una referencia al estado (@Binding)",
+                    "Los cambios en la vista hija actualizan el estado en la vista padre"
+                ]
+            )
+        case .stateObject(_):
+            return ProcessInfo(
+                steps: []
+            )
+        case .stateObjectObservableObject:
+            return ProcessInfo(
+                steps: [
+                    "La vista crea el ViewModel con @StateObject",
+                    "El ViewModel persiste durante la vida de la vista",
+                    "@Published notifica cambios y actualiza la UI"
+                ]
+            )
+        case .stateObservable:
+            return ProcessInfo(
+                steps: [
+                    "La vista crea el ViewModel con @State",
+                    "@Observable permite a SwiftUI rastrear cambios automáticamente",
+                    "Cualquier cambio en el ViewModel actualiza la UI"
+                ]
+            )
+        case .observedObject(_):
+            return ProcessInfo(
+                steps: []
+            )
+        case .observedObjectObservableObject:
+            return ProcessInfo(
+                steps: [
+                    "La vista padre crea y posee el ViewModel con @StateObject",
+                    "La vista hija recibe y observa el ViewModel con @ObservedObject",
+                    "Cambios en @Published notifican a todas las vistas que observan"
+                ]
+            )
+        case .varObservable:
+            return ProcessInfo(
+                steps: [
+                    "La vista recibe el `ViewModel` como `var`, lo que significa que solo puede leer sus valores.",
+                    "`@Observable` permite que SwiftUI rastree cambios, pero la vista **no puede modificar el objeto**.",
+                    "Ideal para vistas que solo muestran datos sin modificarlos."
+                ]
+            )
+        case .bindableObservable:
+            return ProcessInfo(
+                steps: [
+                    "La vista recibe un objeto observable marcado con @Bindable",
+                    "Controles de UI (TextField, Toggle, etc.) pueden modificar directamente las propiedades del objeto sin crear explícitamente un Binding",
+                    "Cualquier cambio en estas propiedades actualiza automáticamente la interfaz gracias a @Observable"
+                ]
+            )
+
         }
     }
     
@@ -345,61 +348,47 @@ indirect enum Tab: CaseIterable, Hashable {
         switch self {
         case .state:
             return [
-                "`@State` se usa para datos simples y locales de una vista.",
-                "SwiftUI gestiona el almacenamiento y ciclo de vida de `@State`.",
-                "Al cambiar su valor, la vista se redibuja automáticamente.",
-                "Es ideal para valores como `Bool`, `String` o índices en Pickers.",
-                "En versiones modernas de SwiftUI, `@State` puede contener modelos observables (`@Observable`)."
+                "Gestiona **estados locales simples** en vistas.",
+                "Se actualiza automáticamente al cambiar el valor.",
+                "Ideal para valores primitivos como números o cadenas."
             ]
         case .binding:
             return [
-                "`@Binding` permite compartir un estado entre una vista padre e hija.",
-                "La vista padre posee la fuente de verdad (`@State`).",
-                "La vista hija recibe el estado como `@Binding`, sin poseerlo.",
-                "Los cambios en la vista hija actualizan el estado en la vista padre.",
-                "Controles de SwiftUI como `Toggle`, `Slider`, `TextField` usan bindings."
+                "Referencia **bidireccional** compartida entre vistas.",
+                "Vista hija modifica estado padre directamente.",
+                "Fuente de verdad sigue siendo la vista superior."
             ]
-        case .stateObject:
-            return []
         case .stateObjectObservableObject:
             return [
-                "`@StateObject` se usa cuando una vista debe **crear y poseer** un objeto observable.",
-                "`@StateObject` asegura que el objeto **no se reinicializa** cuando la vista se redibuja.",
-                "`@Published` en el `ObservableObject` notifica cambios y actualiza la UI automáticamente.",
-                "Este era el método recomendado antes de iOS 17."
+                "Antes de iOS 17 era obligatorio para objetos observables.",
+                "Garantiza una sola instancia por vista.",
+                "Ciclo de vida ligado a la vista."
             ]
         case .stateObservable:
             return [
-                "`@State` ahora puede almacenar `@Observable` sin `@StateObject`.",
-                "`@Observable` elimina la necesidad de `@Published`, ya que SwiftUI rastrea automáticamente los cambios.",
-                "Es más simple y menos propenso a errores que `@StateObject`.",
-                "Requiere iOS 17+."
+                "Nueva forma en iOS 17+ sin necesidad de `@StateObject`.",
+                "Simplifica y reduce errores comunes en la gestión del estado.",
+                "SwiftUI gestiona automáticamente el ciclo de vida."
             ]
-        case .observedObject:
-            return []
         case .observedObjectObservableObject:
             return [
-                "`@ObservedObject` se utiliza para observar objetos que implementan `ObservableObject`.",
-                "Las propiedades del objeto marcadas con `@Published` desencadenan actualizaciones de la vista al cambiar.",
-                "La vista no es propietaria del objeto observado; este es gestionado externamente.",
-                "Es útil para compartir un objeto observable entre múltiples vistas."
+                "Observa objetos externos que conforman a `ObservableObject`.",
+                "Requiere propiedades marcadas con `@Published`.",
+                "La instancia es gestionada externamente."
             ]
-            
         case .varObservable:
             return [
-                "`@Observable` es un macro que simplifica la creación de objetos observables.",
-                "Las propiedades de una clase marcada con `@Observable` son automáticamente observables.",
-                "Elimina la necesidad de usar `@Published` en cada propiedad.",
-                "Mejora la claridad y reduce el código boilerplate en la gestión del estado."
+                "Alternativa moderna a `ObservableObject`.",
+                "SwiftUI observa automáticamente cambios en propiedades.",
+                "Reduce la complejidad del código."
             ]
-            
         case .bindableObservable:
             return [
-                "`@Bindable` permite crear enlaces directos a las propiedades de objetos observables.",
-                "Facilita la interacción directa de la UI con el modelo de datos.",
-                "Requiere que la clase del modelo conforme al protocolo `Observable`.",
-                "Simplifica la gestión de enlaces en vistas complejas."
+                "Enlaces reactivos y directos con controles de la UI.",
+                "Bidireccional, sin necesidad explícita de bindings.",
+                "Ideal para interacciones directas en formularios."
             ]
+        default: return []
         }
     }
 }

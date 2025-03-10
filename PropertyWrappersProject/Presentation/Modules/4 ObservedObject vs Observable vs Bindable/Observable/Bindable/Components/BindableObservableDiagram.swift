@@ -1,25 +1,25 @@
 //
-//  ObservableDiagram.swift
+//  BindableObservableDiagram.swift
 //  PropertyWrappersProject
 //
-//  Created by Alvaro Guerra Freitas on 7/3/25.
+//  Created by Alvaro Guerra Freitas on 10/3/25.
 //
 
 import SwiftUI
 
-struct ObservableDiagram: View {
+struct BindableObservableDiagram: View {
     let tab: Tab
     
     var body: some View {
         CardView(tab: tab) {
-            Text("Cómo Funciona @State con @Observable")
+            Text("Cómo Funciona @Bindable con `@Observable`")
                 .font(.system(.title2, design: .rounded, weight: .bold))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             VStack(spacing: 20) {
-                HStack(spacing: 20) {
+                HStack(spacing: 0) {
                     VStack(spacing: 8) {
-                        Text("Vista")
+                        Text("Vista Padre")
                             .font(.headline)
                             .foregroundColor(.secondary)
                         
@@ -29,10 +29,9 @@ struct ObservableDiagram: View {
                             .background(tab.theme.primaryColor.opacity(0.1))
                             .cornerRadius(4)
                         
-                        Text("Instancia")
+                        Text("Crea y posee")
                             .font(.caption)
                             .foregroundColor(.secondary)
-                            .padding(.bottom, 8)
                     }
                     
                     VStack {
@@ -40,32 +39,44 @@ struct ObservableDiagram: View {
                             .font(.title2)
                             .foregroundColor(tab.theme.primaryColor)
                         
-                        Text("$count")
+                        Text("Pasa referencia")
                             .font(.caption)
-                            .foregroundColor(tab.theme.primaryColor)
-                        
-                        Image(systemName: "arrow.left")
-                            .font(.title2)
                             .foregroundColor(tab.theme.primaryColor)
                     }
                     .padding()
                     
                     VStack(spacing: 8) {
-                        Text("ViewModel")
+                        Text("Vista Hija")
                             .font(.headline)
                             .foregroundColor(.secondary)
                         
-                        Text("var")
+                        Text("@Bindable var viewModel")
                             .font(.system(.caption, design: .monospaced))
                             .padding(6)
                             .background(tab.theme.secondaryColor.opacity(0.1))
                             .cornerRadius(4)
                         
-                        Text("Fuente de verdad")
+                        Text("Observa y modifica")
                             .font(.caption)
                             .foregroundColor(.secondary)
-                            .padding(.bottom, 8)
                     }
+                }
+                .padding(.vertical)
+                
+                VStack(spacing: 8) {
+                    Text("ViewModel")
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                    
+                    Text("var")
+                        .font(.system(.caption, design: .monospaced))
+                        .padding(6)
+                        .background(tab.theme.primaryColor.opacity(0.5))
+                        .cornerRadius(4)
+                    
+                    Text("Fuente de verdad")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
                 
                 ProcessSection(tab: tab)
@@ -75,5 +86,5 @@ struct ObservableDiagram: View {
 }
 
 #Preview {
-    ObservableDiagram(tab: .stateObservable)
+    BindableObservableDiagram(tab: .bindableObservable)
 }

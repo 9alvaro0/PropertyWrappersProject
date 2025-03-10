@@ -14,7 +14,7 @@ struct StateDemo: View {
     @State private var isAnimating: Bool = false
     
     var body: some View {
-        VStack(spacing: 20) {
+        CardView(tab: tab) {
             Text("Demostración Interactiva")
                 .font(.system(.title2, design: .rounded, weight: .bold))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -72,14 +72,11 @@ struct StateDemo: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity)
             .padding()
-            .background(tab.theme.cardBackground)
+            .background(tab.theme.backgroundColor)
             .cornerRadius(16)
         }
-        .padding()
-        .background(tab.theme.cardBackground)
-        .cornerRadius(16)
-        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
     
     private func incrementWithAnimation() {

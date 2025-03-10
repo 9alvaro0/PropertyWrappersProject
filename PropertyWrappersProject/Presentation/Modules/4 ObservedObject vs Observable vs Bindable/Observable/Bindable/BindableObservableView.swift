@@ -16,7 +16,7 @@ struct BindableObservableView: View {
                 TabHeader(tab: tab)
                 ConceptView(tab: tab)
                 BindableObservableDemo(tab: tab)
-//                BindableObservableDiagram(tab: tab)
+                BindableObservableDiagram(tab: tab)
                 KeyPoints(tab: tab)
             }
         }

@@ -14,8 +14,8 @@ struct ObservableDemo: View {
     @State private var isAnimating: Bool = false
 
     var body: some View {
-        VStack(spacing: 20) {
-            Text("💡 Demostración Interactiva")
+        CardView(tab: tab) {
+            Text("Demostración Interactiva")
                 .font(.title2.bold())
                 .frame(maxWidth: .infinity, alignment: .leading)
             
@@ -29,11 +29,13 @@ struct ObservableDemo: View {
                     .padding(6)
                     .background(tab.theme.secondaryColor.opacity(0.2))
                     .cornerRadius(4)
+                    .scaleEffect(isAnimating ? 1.05 : 1.0)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isAnimating)
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(tab.theme.cardBackground)
-            .cornerRadius(12)
+            .background(tab.theme.backgroundColor)
+            .cornerRadius(6)
             
             VStack(spacing: 20) {
                 Text("Vista")
@@ -83,13 +85,9 @@ struct ObservableDemo: View {
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(tab.theme.cardBackground)
-            .cornerRadius(12)
+            .background(tab.theme.backgroundColor)
+            .cornerRadius(16)
         }
-        .padding()
-        .background(tab.theme.cardBackground)
-        .cornerRadius(16)
-        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
 }
 

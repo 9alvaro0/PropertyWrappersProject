@@ -12,7 +12,7 @@ struct KeyPoints: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("✅ Puntos Clave")
+            Text("Puntos Clave")
                 .font(.system(.title2, design: .rounded, weight: .bold))
             
             VStack(alignment: .leading, spacing: 12) {

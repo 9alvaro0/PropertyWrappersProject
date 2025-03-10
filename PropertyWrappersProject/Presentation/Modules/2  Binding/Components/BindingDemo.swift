@@ -10,21 +10,21 @@ import SwiftUI
 struct BindingDemo: View {
     let tab: Tab
     
-    @State private var playerName: String = "Alice"
+    @State private var userName: String = "Alvaro"
     @State private var isAnimating: Bool = false
     
     var body: some View {
-        VStack(spacing: 20) {
+        CardView(tab: tab) {
             Text("Demostración Interactiva")
                 .font(.title2.bold())
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             VStack(spacing: 20) {
-                Text("🧑🏻 Vista Padre")
+                Text("Vista Padre")
                     .font(.headline)
                     .foregroundColor(.secondary)
                 
-                Text("@State var playerName = ''\(playerName)''")
+                Text("@State var userName = ''\(userName)''")
                     .font(.caption)
                     .padding(6)
                     .background(tab.theme.secondaryColor.opacity(0.2))
@@ -34,11 +34,11 @@ struct BindingDemo: View {
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(tab.theme.cardBackground)
-            .cornerRadius(12)
+            .background(tab.theme.backgroundColor)
+            .cornerRadius(16)
             
-            ChildView(tab: tab, name: $playerName)
-                .onChange(of: playerName) {
+            ChildView(tab: tab, name: $userName)
+                .onChange(of: userName) {
                     withAnimation {
                         isAnimating = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -47,10 +47,6 @@ struct BindingDemo: View {
                     }
                 }
         }
-        .padding()
-        .background(tab.theme.cardBackground)
-        .cornerRadius(16)
-        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
 }
 
@@ -60,7 +56,7 @@ private struct ChildView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            Text("👶 Vista Hija")
+            Text("Vista Hija")
                 .font(.headline)
                 .foregroundColor(.secondary)
             
@@ -72,8 +68,8 @@ private struct ChildView: View {
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color(.systemGray5))
-        .cornerRadius(12)
+        .background(tab.theme.backgroundColor)
+        .cornerRadius(16)
     }
 }
 
