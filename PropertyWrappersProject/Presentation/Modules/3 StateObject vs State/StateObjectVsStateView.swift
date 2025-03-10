@@ -26,7 +26,7 @@ struct StateObjectVsStateView: View {
                             tabs: tabs,
                             selectedTab: $selectedTab
                         )
-                        ComparisonSection(
+                        ComparisonSection3(
                             tab: tab,
                             tabs: tabs,
                             proxy: proxy

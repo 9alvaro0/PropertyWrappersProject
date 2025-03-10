@@ -25,6 +25,7 @@ struct ObservedObjectVsObservableVsBindableView: View {
                         tabs: tabs,
                         selectedTab: $selectedTab
                     )
+                    
                 }
             }
             .background(tab.theme.backgroundColor)
