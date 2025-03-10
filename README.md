@@ -31,8 +31,6 @@ Cada `Tab` en la app representa un Property Wrapper y te permite visualizar cóm
 2. **Abre el proyecto en Xcode**
 3. **Ejecuta en el simulador** 🚀
 
-![RocketSim_Screenshot_iPhone_16_Pro_6 3_2025-03-10_16 54 29](https://github.com/user-attachments/assets/a6c35194-133d-4180-9d15-8e61f24e2ace)
-
 ## 🎨 Diseño y Estructura
 El proyecto está dividido en módulos con una navegación clara y temática. Cada vista tiene una tarjeta explicativa con ejemplos prácticos para que puedas entender **cómo y cuándo** usar cada Property Wrapper.
 
