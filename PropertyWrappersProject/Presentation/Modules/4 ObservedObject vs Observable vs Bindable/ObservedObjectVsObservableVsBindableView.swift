@@ -12,23 +12,30 @@ struct ObservedObjectVsObservableVsBindableView: View {
     let tabs: [Tab]
     
     @State private var selectedTab: Tab = .observedObjectObservableObject
-
+    
     var body: some View {
         NavigationStack {
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 24) {
-                    TabHeader(tab: tab)
-                        .padding(.horizontal, 16)
-                    ConceptView(tab: tab)
-                        .padding(.horizontal, 16)
-                    PickerSection(
-                        tabs: tabs,
-                        selectedTab: $selectedTab
-                    )
-                    
+            ScrollViewReader { proxy in
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 24) {
+                        TabHeader(tab: tab)
+                            .padding(.horizontal, 16)
+                        ConceptView(tab: tab)
+                            .padding(.horizontal, 16)
+                        PickerSection(
+                            tabs: tabs,
+                            selectedTab: $selectedTab
+                        )
+                        ComparisonSection4(
+                            tab: tab,
+                            tabs: tabs,
+                            proxy: proxy
+                        )
+                    }
                 }
+                .contentMargins(16)
+                .background(tab.theme.backgroundColor)
             }
-            .background(tab.theme.backgroundColor)
         }
     }
 }

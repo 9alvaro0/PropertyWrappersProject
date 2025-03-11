@@ -20,7 +20,7 @@ struct BindingView: View {
                 KeyPoints(tab: tab)
             }
         }
-        .contentMargins(.horizontal, 16)
+        .contentMargins(16)
         .background(tab.theme.backgroundColor)
     }
 }

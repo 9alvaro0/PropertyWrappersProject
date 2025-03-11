@@ -33,6 +33,7 @@ struct StateObjectVsStateView: View {
                         )
                     }
                 }
+                .contentMargins(16)
                 .background(tab.theme.backgroundColor)
             }
         }
